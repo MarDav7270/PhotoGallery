@@ -8,38 +8,17 @@
 .access-content{max-width:500px;flex:1}.access-content>p{font-size:12px;line-height:1.9;color:#77736b;margin:0 0 15px}.gallery-access-form{display:flex;gap:8px}.gallery-access-form input{min-width:0;flex:1;padding:14px 13px;border:1px solid var(--line);background:#faf9f6;font-size:11px;outline:none}.gallery-access-form input:focus{border-color:var(--accent)}.gallery-access-form .button{white-space:nowrap}.access-error{min-height:14px!important;color:#a33!important;font-size:10px!important;margin-top:8px!important}.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media(max-width:800px){.access-content{max-width:none}.gallery-access-form{flex-direction:column}.gallery-access-form .button{width:100%}}
 .preview-note {
-  .lightbox-photo-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-height: 100vh;
-  gap: 10px;
-}
-
-.lightbox-photo-container img {
-  max-width: 90vw;
-  max-height: calc(100vh - 150px);
-  width: auto;
-  height: auto;
-  object-fit: contain;
-}
-
-.preview-note {
-  position: static;
-  transform: none;
+  position: fixed;
+  bottom: 150px;
+  left: 50%;
+  transform: translateX(-50%);
   width: min(90%, 420px);
   margin: 0;
-  padding: 0;
+  padding: 0 12px;
   color: rgba(255, 255, 255, 0.75);
   font-size: 12px;
   line-height: 1.6;
   text-align: center;
-}
-
-.lightbox-photo-container .download-button {
-  position: static;
-  margin: 0;
-}
+  z-index: 1002;
+  pointer-events: none;
 }
