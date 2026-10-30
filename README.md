@@ -1,44 +1,37 @@
-# Timeless Photography — Client Galleries
+TIMELESS PHOTOGRAPHY — CLOUDFLARE R2 MIGRATION
 
-A lightweight Vercel gallery site with a password-protected admin area and Cloudinary image storage.
+IMPORTANT:
+- Revoke the Cloudflare token that was pasted into chat. Create a replacement User API Token with Object Read & Write access limited to bucket photography-client-photos.
+- Never put R2 secrets in source files or GitHub.
+- This project expects a private R2 bucket. Do not enable public access for this setup.
 
-## Features
-- Password-protected admin dashboard
-- Create client galleries
-- Upload multiple photos directly from the dashboard
-- Share a unique gallery URL with each client
-- Responsive photo grid and fullscreen lightbox
-- Previous/next navigation, keyboard support, and individual downloads
-- Photos live in Cloudinary, not in the Vercel deployment
+VERCEL ENVIRONMENT VARIABLES:
+R2_ACCOUNT_ID = the account ID in your S3 endpoint hostname
+R2_ACCESS_KEY_ID = replacement token's Access Key ID
+R2_SECRET_ACCESS_KEY = replacement token's Secret Access Key
+R2_BUCKET_NAME = photography-client-photos
 
-## 1. Create a Cloudinary account
-1. Create a free account at https://cloudinary.com/
-2. From the Cloudinary Dashboard, copy your **Cloud Name**, **API Key**, and **API Secret**.
-3. Keep the API Secret private. Never put it in browser-side code.
+Keep existing:
+ADMIN_PASSWORD
+SESSION_SECRET
 
-## 2. Deploy to Vercel
-1. Create a new GitHub repository and upload the contents of this folder.
-2. Import that repository into https://vercel.com/
-3. In Vercel, open **Project Settings → Environment Variables**.
-4. Add all five variables from `.env.example`:
-   - `ADMIN_PASSWORD`: a strong password only you know
-   - `SESSION_SECRET`: a long random string (at least 32 characters)
-   - `CLOUDINARY_CLOUD_NAME`
-   - `CLOUDINARY_API_KEY`
-   - `CLOUDINARY_API_SECRET`
-5. Redeploy after adding the variables.
+Remove old CLOUDINARY_* variables after confirming the R2 migration works.
 
-## 3. Use the dashboard
-- Visit `/admin.html` on your deployed site.
-- Sign in with `ADMIN_PASSWORD`.
-- Create a gallery and upload photos.
-- Copy the generated client link and send it to your client.
+R2 BUCKET CORS:
+In Cloudflare Dashboard > R2 > photography-client-photos > Settings > CORS Policy,
+add a rule:
+Allowed origins: https://YOUR-PRODUCTION-DOMAIN (and your Vercel preview domain if needed)
+Allowed methods: PUT, GET, HEAD
+Allowed headers: *
+Expose headers: ETag
+Max age: 3600
 
-Gallery links use a random suffix, for example `/g/smith-family-a8f3c1d2`. Treat the link as private: anyone who has it can view and download that gallery.
+DEPLOY:
+1. Merge the api/ and lib/ folders from this package into your existing repository.
+2. Replace admin.js, gallery.js, and package.json.
+3. Keep all existing files not included here, including index.html, admin.html, styles.css, api/login.js, api/logout.js, api/me.js, and vercel.json.
+4. Add the four R2 environment variables to Vercel Production (and Preview if desired).
+5. Redeploy.
 
-## Important notes
-- This starter uses Cloudinary folders and the Cloudinary Admin API. Cloudinary's current plan limits and storage/bandwidth allowances apply.
-- The gallery is private by unlisted link, not by a client password. Do not share the link publicly.
-- Vercel environment variables are server-side. Do not add secrets to HTML or JavaScript.
-- The first version supports individual photo downloads. A downloadable ZIP for the entire gallery can be added later.
-- Use JPEG/WebP images sized for delivery. Keep your original RAW files backed up separately.
+IMPORTANT MIGRATION LIMIT:
+Existing Cloudinary photos are NOT copied to R2 by these code changes. Existing client galleries stored only in Cloudinary will appear empty until their images are migrated. Do not delete your Cloudinary account or old images until you have copied and verified them in R2. Existing gallery slugs/URLs remain the same for newly created R2 folders; existing gallery folder names are not automatically imported.
