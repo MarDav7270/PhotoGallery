@@ -312,5 +312,11 @@ body{background:var(--paper);color:var(--ink)}
     max-height: 58vh;
   }
 }
-
+.site-logo {
+  height: 58px;
+  width: auto;
+  max-width: 180px;
+  object-fit: contain;
+  display: block;
+}
 
