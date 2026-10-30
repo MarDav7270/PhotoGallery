@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f4f1eb">
+  <title>Client Gallery | Timeless Photography</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="client-gallery">
+  <header class="site-header">
+    <a class="brand" href="/"><span class="brand-mark">T.</span><span class="brand-stack"><b>TIMELESS</b><small>PHOTOGRAPHY</small></span></a>
+    <span class="header-label">A PRIVATE COLLECTION</span>
+  </header>
+  <main>
+    <section class="gallery-heading">
+      <p class="eyebrow"><span></span> YOUR PHOTOGRAPHS ARE READY</p>
+      <h1 id="gallery-title">A collection<br><em>to remember.</em></h1>
+      <p id="gallery-date" class="gallery-date">A special collection, prepared just for you.</p>
+      <div class="gallery-meta"><span id="photo-count">YOUR PHOTOS</span><span>SELECT AN IMAGE TO VIEW</span></div>
+    </section>
+    <section id="photo-grid" class="photo-grid"></section>
+    <p id="gallery-status" class="status muted">Preparing your gallery…</p>
+    <section class="gallery-endnote"><span class="endnote-mark">T.</span><p>Thank you for letting us capture<br>moments that matter.</p><small>TIMELESS PHOTOGRAPHY</small></section>
+  </main>
+  <footer class="site-footer"><span>© <span id="year"></span> TIMELESS PHOTOGRAPHY</span><span>MADE TO BE REMEMBERED</span></footer>
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <button id="lightbox-close" class="lightbox-close" aria-label="Close">×</button>
+    <div class="lightbox-topline"><span>TIMELESS PHOTOGRAPHY</span><span id="lightbox-caption"></span></div>
+    <button id="lightbox-prev" class="lightbox-arrow prev" aria-label="Previous photo">←</button>
+    <figure class="lightbox-figure"><img id="lightbox-image" alt=""></figure>
+    <button id="lightbox-next" class="lightbox-arrow next" aria-label="Next photo">→</button>
+    <a id="lightbox-download" class="download-button" href="#" download><span>↓</span> DOWNLOAD IMAGE</a>
+  </div>
+  <script src="/gallery.js" defer></script>
+</body></html>

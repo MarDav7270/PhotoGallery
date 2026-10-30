@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f4f1eb">
+  <title>Timeless Photography | Client Galleries</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="landing">
+  <header class="site-header">
+    <a class="brand" href="/"><span class="brand-mark">T.</span><span class="brand-stack"><b>TIMELESS</b><small>PHOTOGRAPHY</small></span></a>
+    <a class="header-link" href="/admin.html">PHOTOGRAPHER LOGIN <span>↗</span></a>
+  </header>
+  <main>
+    <section class="landing-hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> YOUR PRIVATE PHOTO COLLECTION</p>
+        <h1>Moments worth<br><em>keeping forever.</em></h1>
+        <p class="hero-description">Your photographs are ready. Step inside your personal gallery to relive the moments and download your favorites.</p>
+        <a class="hero-cta" href="#access">OPEN YOUR COLLECTION <span>↓</span></a>
+      </div>
+      <div class="hero-art" aria-label="Photography gallery preview">
+        <div class="hero-photo hero-photo-main"></div>
+        <div class="hero-photo hero-photo-detail"></div>
+        <div class="hero-note"><span>TIMELESS</span><small>THE ART OF REMEMBERING</small></div>
+      </div>
+    </section>
+    <section class="access-strip" id="access">
+      <div><p class="eyebrow">YOUR PRIVATE COLLECTION</p><h2>Ready to revisit?</h2></div>
+      <div class="access-content">
+        <p>Paste the private gallery link we sent you to open your photographs.</p>
+        <form id="gallery-access-form" class="gallery-access-form">
+          <label class="visually-hidden" for="gallery-link">Your private gallery link or code</label>
+          <input id="gallery-link" type="text" placeholder="Paste your gallery link here" autocomplete="url" required>
+          <button class="button" type="submit">OPEN GALLERY <span>→</span></button>
+        </form>
+        <p id="access-error" class="access-error" role="alert"></p>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><span>© <span id="year"></span> TIMELESS PHOTOGRAPHY</span><span>CAPTURING MOMENTS THAT LAST A LIFETIME</span></footer>
+  <script>
+    document.getElementById('year').textContent=new Date().getFullYear();
+    document.getElementById('gallery-access-form').addEventListener('submit',function(event){
+      event.preventDefault();
+      const field=document.getElementById('gallery-link');
+      const error=document.getElementById('access-error');
+      const value=field.value.trim();
+      let slug='';
+      try {
+        if (value.includes('/')) {
+          const parsed=new URL(value,window.location.origin);
+          const match=parsed.pathname.match(/^\\/g\\/([a-z0-9-]+)\\/?$/i);
+          if (match) slug=match[1];
+        } else {
+          slug=value.replace(/^\\/+|\\/+$/g,'');
+        }
+      } catch (_) {}
+      if (!/^[a-z0-9-]{3,70}$/i.test(slug)) {
+        error.textContent='That link does not look right. Please use the private gallery link we sent you.';
+        return;
+      }
+      window.location.href='/g/'+slug.toLowerCase();
+    });
+  </script>
+</body></html>

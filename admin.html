@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f4f1eb">
+  <title>Studio | Timeless Photography</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="admin-page">
+  <header class="site-header">
+    <a class="brand" href="/"><span class="brand-mark">T.</span><span class="brand-stack"><b>TIMELESS</b><small>PHOTOGRAPHY</small></span></a>
+    <span class="header-label">STUDIO DASHBOARD</span>
+  </header>
+  <main class="admin-wrap">
+    <section id="login-panel" class="login-card">
+      <div class="login-monogram">T.</div><p class="eyebrow">THE PRIVATE STUDIO</p><h1>Welcome back.</h1>
+      <p class="muted">Sign in to manage your client collections.</p>
+      <form id="login-form"><label for="password">PASSWORD</label><input id="password" type="password" autocomplete="current-password" placeholder="Enter your password" required><button class="button full" type="submit">ENTER STUDIO <span>→</span></button></form>
+      <p id="login-error" class="error" role="alert"></p>
+    </section>
+    <section id="dashboard" hidden>
+      <div class="dashboard-heading"><div><p class="eyebrow"><span></span> YOUR PRIVATE WORKSPACE</p><h1>Good to see you.</h1><p class="muted">Create a collection, add your photographs, and share the link.</p></div><button id="logout" class="button button-outline">SIGN OUT</button></div>
+      <section class="create-card"><div class="create-intro"><p class="eyebrow">START A NEW COLLECTION</p><h2>A new story begins.</h2><p class="muted">Create a private gallery for your next client.</p></div>
+        <form id="create-form" class="create-form"><div><label for="client-name">CLIENT / SESSION NAME</label><input id="client-name" placeholder="e.g. Garcia Family" maxlength="70" required></div><div><label for="session-date">SESSION DATE <span>(OPTIONAL)</span></label><input id="session-date" type="date"></div><button class="button" type="submit">CREATE GALLERY <span>→</span></button></form>
+        <p id="create-message" class="muted small"></p>
+      </section>
+      <section class="gallery-admin-section"><div class="section-heading"><div><p class="eyebrow">YOUR COLLECTIONS</p><h2>Client galleries</h2></div><button id="refresh" class="text-button">↻ REFRESH</button></div><div id="gallery-list" class="admin-gallery-list"><p class="muted">Loading collections…</p></div></section>
+      <p id="dashboard-error" class="error" role="alert"></p>
+    </section>
+  </main>
+  <footer class="site-footer"><span>© <span id="year"></span> TIMELESS PHOTOGRAPHY</span><span>STUDIO ADMINISTRATION</span></footer>
+  <script src="/admin.js" defer></script>
+</body></html>
