@@ -12,7 +12,7 @@
   position: fixed !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
-  bottom: 65px !important;
+  bottom: 120px !important;
   width: min(90%, 420px);
   margin: 0 !important;
   text-align: center;
