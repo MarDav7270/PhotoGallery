@@ -32,6 +32,14 @@ if (titleElement) {
       b.append(img);b.onclick=()=>openLightbox(i);grid.append(b);
     });
     $("gallery-status").textContent=photos.length?"":"Your photos are being prepared. Please check back soon.";
-  }catch(e){$("gallery-status").textContent=e.message}
+ }catch(e){
+  console.error("Gallery loading error:", e);
+
+  const status = $("gallery-status");
+
+  if (status) {
+    status.textContent = e.message;
+  }
+}
 }
 init();
