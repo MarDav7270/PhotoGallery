@@ -11,7 +11,7 @@ $("create-form").addEventListener("submit",async e=>{e.preventDefault();const ms
 async function loadGalleries(){const box=$("gallery-list");box.innerHTML='<p class="muted">Loading…</p>';const d=await api("/api/galleries");if(!d.folders.length){box.innerHTML='<p class="muted">No galleries yet. Create your first one above.</p>';return}box.innerHTML="";for(const f of d.folders){const slug=f.name;const url=`${location.origin}/g/${slug}`;const el=document.createElement("article");el.className="admin-gallery";const info=document.createElement("div");const title=document.createElement("h3");title.textContent=slug.replace(/-[a-f0-9]{8}$/,"").replace(/-/g," ").replace(/\b\w/g,c=>c.toUpperCase());const sub=document.createElement("p");sub.textContent=url;info.append(title,sub);const actions=document.createElement("div");actions.className="admin-gallery-actions";const open=document.createElement("a");open.className="small-button";open.href=url;open.target="_blank";open.rel="noopener";open.textContent="View gallery";const copy=document.createElement("button");copy.className="small-button";copy.textContent="Copy link";copy.onclick=()=>navigator.clipboard.writeText(url);const upload=document.createElement("button");upload.className="small-button";upload.textContent="Manage photos";upload.onclick=()=>openUpload(slug,title.textContent);actions.append(open,copy,upload);el.append(info,actions);box.append(el)}}
 
 // Create a separate browsing preview. The original JPEG is uploaded unchanged.
-async function makePreview(file,maxSide=1200,quality=.68){
+async function makePreview(file,maxSide=900,quality=.62){
   const bitmap=await createImageBitmap(file);
   const scale=Math.min(1,maxSide/Math.max(bitmap.width,bitmap.height));
   const canvas=document.createElement("canvas");
@@ -20,7 +20,7 @@ async function makePreview(file,maxSide=1200,quality=.68){
   const ctx=canvas.getContext("2d",{alpha:false});
   ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);
   bitmap.close();
-  const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/jpeg",quality));
+  const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/webp",quality));
   canvas.width=1;canvas.height=1;
   if(!blob)throw new Error("Could not create a preview.");
   return blob;
@@ -32,8 +32,24 @@ async function putFile(url,file,type){
 function openUpload(slug,name){
   const old=document.getElementById("upload-panel");if(old)old.remove();
   const panel=document.createElement("section");panel.id="upload-panel";panel.className="panel";
-  panel.innerHTML=`<div class="section-heading"><div><h2>Manage photos</h2><p class="muted small">${name}</p></div><button class="text-button" id="close-upload">Close</button></div><label for="photo-files">Choose original JPEG photos (up to 100 MB each)</label><input id="photo-files" type="file" accept="image/jpeg,.jpg,.jpeg" multiple><p id="upload-status" class="muted small">Original JPEGs are preserved. Smaller previews are created for faster gallery browsing.</p><progress id="upload-progress" value="0" max="100" style="width:100%;display:none"></progress><div id="manage-photo-grid" class="manage-photo-grid"></div>`;
+  panel.innerHTML=`<div class="section-heading"><div><h2>Manage photos</h2><p class="muted small">${name}</p></div><button class="text-button" id="close-upload">Close</button></div><label for="photo-files">Choose original JPEG photos (up to 100 MB each)</label><input id="photo-files" type="file" accept="image/jpeg,.jpg,.jpeg" multiple><p id="upload-status" class="muted small">Original JPEGs stay untouched. Small WebP previews are used for browsing.</p><button type="button" class="small-button" id="optimize-existing">Optimize existing photos</button><progress id="upload-progress" value="0" max="100" style="width:100%;display:none"></progress><div id="manage-photo-grid" class="manage-photo-grid"></div>`;
   $("dashboard").insertBefore(panel,$("dashboard-error"));$("close-upload").onclick=()=>panel.remove();
+  $("optimize-existing").onclick=async()=>{
+    const button=$("optimize-existing"),status=$("upload-status"),progress=$("upload-progress");
+    button.disabled=true;progress.style.display="block";progress.value=0;
+    let done=false,processed=0;
+    try{
+      while(!done){
+        status.textContent=`Optimizing existing photos… ${processed} completed`;
+        const result=await api("/api/optimize-previews",{method:"POST",body:JSON.stringify({slug})});
+        processed+=result.processed||0;done=!!result.done;
+        progress.value=done?100:Math.min(95,processed*5);
+      }
+      status.textContent=processed?`Finished! Optimized ${processed} existing photo(s).`:"All photos already have optimized previews.";
+      await loadManagePhotos(slug);
+    }catch(err){status.textContent=`Optimization stopped: ${err.message}. Click Optimize existing photos to try again.`}
+    finally{button.disabled=false}
+  };
   $("photo-files").onchange=async e=>{
     const files=[...e.target.files],status=$("upload-status"),progress=$("upload-progress"),input=e.target;
     let succeeded=0,failed=[];input.disabled=true;progress.style.display="block";progress.value=0;
@@ -43,11 +59,11 @@ function openUpload(slug,name){
         if(!/^image\/jpeg$/i.test(file.type))throw new Error("This file is not a JPEG.");
         if(file.size>100*1024*1024)throw new Error("This photo is larger than 100 MB.");
         const preview=await makePreview(file);
-        const sig=await api("/api/sign-upload",{method:"POST",body:JSON.stringify({slug,filename:file.name,contentType:"image/jpeg",size:file.size,previewSize:preview.size})});
+        const sig=await api("/api/sign-upload",{method:"POST",body:JSON.stringify({slug,filename:file.name,contentType:"image/jpeg",previewContentType:"image/webp",size:file.size,previewSize:preview.size})});
         status.textContent=`Uploading original ${i+1} of ${files.length}: ${file.name}`;
         await putFile(sig.uploadUrl,file,"image/jpeg");
         status.textContent=`Uploading preview ${i+1} of ${files.length}: ${file.name}`;
-        await putFile(sig.previewUploadUrl,preview,"image/jpeg");
+        await putFile(sig.previewUploadUrl,preview,"image/webp");
         succeeded++;
       }catch(err){failed.push(`${file.name}: ${err.message}`)}
       progress.value=Math.round(((i+1)/files.length)*100);
