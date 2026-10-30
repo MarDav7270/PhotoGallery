@@ -40,27 +40,49 @@
   </main>
   <footer class="site-footer"><span>© <span id="year"></span> TIMELESS PHOTOGRAPHY</span><span>CAPTURING MOMENTS THAT LAST A LIFETIME</span></footer>
   <script>
-    document.getElementById('year').textContent=new Date().getFullYear();
-    document.getElementById('gallery-access-form').addEventListener('submit',function(event){
-      event.preventDefault();
-      const field=document.getElementById('gallery-link');
-      const error=document.getElementById('access-error');
-      const value=field.value.trim();
-      let slug='';
-      try {
-        if (value.includes('/')) {
-          const parsed=new URL(value,window.location.origin);
-          const match=parsed.pathname.match(/^\/g\/([a-z0-9-]+)\/?$/i);
-          if (match) slug=match[1];
-        } else {
-          slug=value.replace(/^\\/+|\\/+$/g,'');
-        }
-      } catch (_) {}
-      if (!/^[a-z0-9-]{3,70}$/i.test(slug)) {
-        error.textContent='That link does not look right. Please use the private gallery link we sent you.';
-        return;
+    
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  document.getElementById('gallery-access-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const field = document.getElementById('gallery-link');
+    const error = document.getElementById('access-error');
+    const value = field.value.trim();
+
+    let slug = '';
+
+    try {
+      if (value.includes('://')) {
+        const parsed = new URL(value);
+        const match = parsed.pathname.match(/^\/g\/([a-z0-9-]+)\/?$/i);
+        if (match) slug = match[1];
+
+      } else if (value.startsWith('/g/')) {
+        const match = value.match(/^\/g\/([a-z0-9-]+)\/?$/i);
+        if (match) slug = match[1];
+
+      } else if (value.startsWith('g/')) {
+        const match = value.match(/^g\/([a-z0-9-]+)\/?$/i);
+        if (match) slug = match[1];
+
+      } else {
+        slug = value.replace(/^\/+|\/+$/g, '');
       }
-      window.location.href='/g/'+slug.toLowerCase();
-    });
+    } catch (e) {
+      slug = '';
+    }
+
+    if (!/^[a-z0-9-]{3,70}$/i.test(slug)) {
+      error.textContent = 'That link or code does not look right. Please check it and try again.';
+      return;
+    }
+
+    error.textContent = '';
+    window.location.href = '/g/' + encodeURIComponent(slug.toLowerCase());
+  });
+</script>
+
   </script>
 </body></html>
