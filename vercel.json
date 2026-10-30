@@ -1,5 +1,8 @@
 {
   "rewrites": [
-    { "source": "/g/:slug", "destination": "/gallery.html?slug=:slug" }
+    {
+      "source": "/g/:slug",
+      "destination": "/gallery.html?slug=:slug"
+    }
   ]
 }
