@@ -319,4 +319,19 @@ body{background:var(--paper);color:var(--ink)}
   object-fit: contain;
   display: block;
 }
+/* MD Photography footer logo */
+.gallery-endnote .footer-logo {
+  display: block;
+  width: 85px;
+  height: auto;
+  max-height: 85px;
+  object-fit: contain;
+  margin: 0 auto 20px;
+}
 
+.gallery-endnote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
