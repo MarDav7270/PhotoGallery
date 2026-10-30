@@ -28,3 +28,8 @@
   margin: 0 !important;
   z-index: 1003;
 }
+#lightbox-download {
+  padding: 14px 24px !important;
+  font-size: 12px !important;
+  min-width: 160px;
+}
