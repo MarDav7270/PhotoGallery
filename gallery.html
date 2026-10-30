@@ -29,12 +29,18 @@
     <button id="lightbox-prev" class="lightbox-arrow prev" aria-label="Previous photo">←</button>
     <figure class="lightbox-figure"><img id="lightbox-image" alt=""></figure>
     <button id="lightbox-next" class="lightbox-arrow next" aria-label="Next photo">→</button>
-    <p class="preview-note">
-  Images shown are previews for faster loading. Download to receive your original, full-resolution photograph.
-</p>
-<a id="lightbox-download" class="download-button" href="#">
-  <span>↓</span> DOWNLOAD ORIGINAL
-</a>
+    <div class="lightbox-photo-container">
+  <img id="lightbox-image" src="" alt="">
+
+  <p class="preview-note">
+    Images shown are previews for faster loading. Download to receive
+    your original, full-resolution photograph.
+  </p>
+
+  <a id="lightbox-download" class="download-button" href="#">
+    <span>↓</span> DOWNLOAD ORIGINAL
+  </a>
+</div>
   </div>
   <script src="/gallery.js" defer></script>
 </body></html>
