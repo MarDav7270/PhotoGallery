@@ -249,4 +249,68 @@ body{background:var(--paper);color:var(--ink)}
   }
 }
 
+/* Mobile-friendly lightbox navigation */
+.lightbox-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.35);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(20,20,20,.65);
+  color: #ffffff;
+  font-size: 25px;
+  cursor: pointer;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lightbox-arrow.prev {
+  left: 20px;
+}
+
+.lightbox-arrow.next {
+  right: 20px;
+}
+
+.lightbox-arrow:active {
+  background: rgba(108,145,194,.8);
+}
+
+/* Smaller screens */
+@media (max-width: 800px) {
+  .lightbox-arrow {
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+    background: rgba(15,15,15,.8);
+  }
+
+  .lightbox-arrow.prev {
+    left: 10px;
+  }
+
+  .lightbox-arrow.next {
+    right: 10px;
+  }
+
+  .lightbox-content {
+    width: 96vw;
+  }
+
+  .lightbox-figure,
+  .lightbox-figure img {
+    max-width: 96vw;
+    max-height: 58vh;
+  }
+}
+
 
