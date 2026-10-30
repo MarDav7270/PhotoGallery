@@ -50,7 +50,7 @@
       try {
         if (value.includes('/')) {
           const parsed=new URL(value,window.location.origin);
-          const match=parsed.pathname.match(/^\\/g\\/([a-z0-9-]+)\\/?$/i);
+          const match=parsed.pathname.match(/^\/g\/([a-z0-9-]+)\/?$/i);
           if (match) slug=match[1];
         } else {
           slug=value.replace(/^\\/+|\\/+$/g,'');
