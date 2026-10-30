@@ -16,7 +16,14 @@ async function init(){
     const r=await fetch(`/api/gallery?slug=${encodeURIComponent(slug)}`);const d=await r.json();
     if(!r.ok)throw new Error(d.error||"Unable to load gallery.");
     photos=d.photos||[];
-    $("gallery-title").textContent=slug.replace(/-[a-f0-9]{8}$/,"").replace(/-/g," ").replace(/\b\w/g,c=>c.toUpperCase());
+    const titleElement = $("gallery-title");
+
+if (titleElement) {
+  titleElement.textContent = slug
+    .replace(/-[a-f0-9]{8}$/, "")
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, c => c.toUpperCase());
+}
     $("photo-count").textContent=`${photos.length} ${photos.length===1?"PHOTO":"PHOTOS"}`;
     const grid=$("photo-grid");grid.innerHTML="";
     photos.forEach((p,i)=>{
