@@ -4,7 +4,7 @@ const querySlug=new URLSearchParams(location.search).get("slug");
 const pathMatch=location.pathname.match(/^\/g\/([a-z0-9-]{3,70})\/?$/i);
 const slug=querySlug||(pathMatch?pathMatch[1]:null);
 let photos=[],current=0;
-function openLightbox(i){current=i;const p=photos[current];$("lightbox-image").src=p.url;$("lightbox-image").alt=`Photo ${current+1}`;$("lightbox-caption").textContent=`${current+1} of ${photos.length}`;$("lightbox-download").href=p.downloadUrl||p.url;$("lightbox-download").removeAttribute("download");$("lightbox").classList.add("open");$("lightbox").setAttribute("aria-hidden","false");document.body.style.overflow="hidden"}
+function openLightbox(i){current=i;const p=photos[current];$("lightbox-image").src=p.previewUrl||p.url;$("lightbox-image").alt=`Photo ${current+1}`;$("lightbox-caption").textContent=`${current+1} of ${photos.length}`;$("lightbox-download").href=p.downloadUrl||p.url;$("lightbox-download").removeAttribute("download");$("lightbox").classList.add("open");$("lightbox").setAttribute("aria-hidden","false");document.body.style.overflow="hidden"}
 function closeLightbox(){$("lightbox").classList.remove("open");$("lightbox").setAttribute("aria-hidden","true");document.body.style.overflow="";$("lightbox-image").src=""}
 function move(n){current=(current+n+photos.length)%photos.length;openLightbox(current)}
 $("lightbox-close").onclick=closeLightbox;$("lightbox-prev").onclick=()=>move(-1);$("lightbox-next").onclick=()=>move(1);
