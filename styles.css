@@ -182,3 +182,71 @@ body{background:var(--paper);color:var(--ink)}
   }
 }
 
+/* Keep lightbox photo, note, and download button together */
+.lightbox-content {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(82vw, 1200px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin: 0;
+}
+
+.lightbox-figure {
+  width: 100%;
+  max-width: 100%;
+  max-height: 62vh;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-figure img {
+  display: block;
+  max-width: 100%;
+  max-height: 62vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Preview note directly below photo */
+.preview-note {
+  position: static !important;
+  transform: none !important;
+  width: 100%;
+  margin: 0 !important;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #c5c0b8;
+}
+
+/* Download button directly below note */
+#lightbox-download {
+  position: static !important;
+  transform: none !important;
+  margin: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 800px) {
+  .lightbox-content {
+    width: 94vw;
+    gap: 12px;
+  }
+
+  .lightbox-figure,
+  .lightbox-figure img {
+    max-height: 58vh;
+  }
+}
+
+
