@@ -127,13 +127,48 @@ async function loadGalleries() {
     edit.className = "small-button";
     edit.textContent = "Edit name";
 
-    const upload = document.createElement("button");
-    upload.className = "small-button";
-    upload.textContent = "Manage photos";
-    upload.onclick = () => openUpload(slug, title.textContent);
+    
+const upload = document.createElement("button");
+upload.className = "small-button";
+upload.textContent = "Manage photos";
+upload.onclick = () => openUpload(slug, title.textContent);
 
-    actions.append(open, copy, edit, upload);
-    el.append(info, actions);
+// Delete gallery button
+const deleteButton = document.createElement("button");
+deleteButton.className = "small-button delete-gallery-button";
+deleteButton.textContent = "Delete gallery";
+
+deleteButton.onclick = async () => {
+  const confirmed = confirm(
+    `Are you sure you want to permanently delete "${title.textContent}"?\n\nThis will delete ALL photos, previews, and gallery information. This cannot be undone.`
+  );
+
+  if (!confirmed) return;
+
+  deleteButton.disabled = true;
+  deleteButton.textContent = "Deleting…";
+
+  try {
+    await api("/api/delete-gallery", {
+      method: "POST",
+      body: JSON.stringify({ slug })
+    });
+
+    el.remove();
+
+    if (!box.querySelector(".admin-gallery")) {
+      box.innerHTML = '<p class="muted">No galleries yet. Create your first one above.</p>';
+    }
+
+  } catch (error) {
+    alert(error.message);
+    deleteButton.disabled = false;
+    deleteButton.textContent = "Delete gallery";
+  }
+};
+
+actions.append(open, copy, upload, deleteButton);
+
 
     const editPanel = document.createElement("div");
     editPanel.className = "gallery-name-editor";
