@@ -362,3 +362,13 @@ body{background:var(--paper);color:var(--ink)}
 .gallery-name-editor button {
   cursor: pointer;
 }
+.delete-gallery-button {
+  color: #d46b6b;
+  border-color: #8d4545;
+}
+
+.delete-gallery-button:hover {
+  background: #8d3030;
+  color: white;
+  border-color: #8d3030;
+}
