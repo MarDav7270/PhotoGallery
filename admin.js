@@ -167,9 +167,10 @@ deleteButton.onclick = async () => {
   }
 };
 
-actions.append(open, copy, upload, deleteButton);
+actions.append(open, copy, edit, upload, deleteButton);
 
-
+// Add gallery information and buttons to the gallery row
+el.append(info, actions);
     const editPanel = document.createElement("div");
     editPanel.className = "gallery-name-editor";
     editPanel.hidden = true;
