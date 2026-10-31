@@ -372,3 +372,22 @@ body{background:var(--paper);color:var(--ink)}
   color: white;
   border-color: #8d3030;
 }
+
+/* Individual photo delete buttons */
+.manage-photo button {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #704747;
+  background: #251a1a;
+  color: #e58b8b;
+  cursor: pointer;
+  font-size: 10px;
+  letter-spacing: .12em;
+  transition: .2s ease;
+}
+
+.manage-photo button:hover {
+  background: #8d3030;
+  border-color: #8d3030;
+  color: #ffffff;
+}
